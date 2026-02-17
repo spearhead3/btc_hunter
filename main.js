@@ -130,12 +130,14 @@ function bruteForce(privateKeyBytes) {
         console.log(`Generated Private Key Byte: ${Buffer.from(privateKeyBytes).toString('hex')}`);
         console.log(`Generated Private Key Text: ${privateKeyWIF}`);
         console.log('Wallet Info:', result);
-        writeData({
-            key: privateKeyWIF,
-            address: result.address,
-            balance: result.balance,
-            timestamp: new Date().toISOString()
-        });
+        if (result.balance > 0) {
+            writeData({
+                key: privateKeyWIF,
+                address: result.address,
+                balance: result.balance,
+                timestamp: new Date().toISOString()
+            });
+        }
         privateKeyBytes = incrementByteArray(privateKeyBytes);
 
         if (privateKeyBytes !== 0) {
