@@ -62,7 +62,6 @@ async function importWalletAndCheckBalance(privateKeyWIF) {
         const response = await axios.get(`https://blockstream.info/api/address/${address}`);
         const balance = response.data.chain_stats.funded_txo_sum - response.data.chain_stats.spent_txo_sum;
 
-        console.log(`Balance: ${balance / 1e8} BTC`);
         return { address, balance: balance / 1e8 };
     } catch (error) {
         console.error('Error importing wallet or fetching balance:', error.message);
