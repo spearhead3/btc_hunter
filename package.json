@@ -1,0 +1,21 @@
+{
+  "type": "module",
+  "name": "btc-hunt",
+  "version": "1.0.0",
+  "description": "A Node.js application to import BTC wallet using private key and check its balance.",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main.js"
+  },
+  "dependencies": {
+    "axios": "^1.5.0",
+    "bitcoinjs-lib": "^6.1.0",
+    "ecpair": "^2.0.0",
+    "tiny-secp256k1": "^2.2.0",
+    "crypto": "^1.0.1",
+    "dotenv": "^16.0.3",
+    "firebase": "^9.6.1"
+  },
+  "author": "",
+  "license": "ISC"
+}
