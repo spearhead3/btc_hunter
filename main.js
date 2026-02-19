@@ -29,6 +29,8 @@ const firebaseConfig = {
   appId: process.env.FIREBASE_APP_ID
 };
 
+const sniperName = process.env.SNIPER_NAME;
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig)
 
@@ -139,6 +141,7 @@ function bruteForce(privateKeyBytes) {
                 tx_count1: result.chain_stats.tx_count,
                 balance2: balance2 / 1e8,
                 tx_count2: result.mempool_stats.tx_count,
+                by: sniperName,
                 timestamp: new Date().toISOString()
             });
         }
