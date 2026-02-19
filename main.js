@@ -60,9 +60,7 @@ async function importWalletAndCheckBalance(privateKeyWIF) {
 
         // Fetch balance from a public API (e.g., Blockstream)
         const response = await axios.get(`https://blockstream.info/api/address/${address}`);
-        const balance = response.data.chain_stats.funded_txo_sum - response.data.chain_stats.spent_txo_sum;
-
-        return { address, balance: balance / 1e8 };
+        return response.data;
     } catch (error) {
         console.error('Error importing wallet or fetching balance:', error.message);
         throw error;
@@ -129,12 +127,18 @@ function bruteForce(privateKeyBytes) {
         waitSync(6000); // Wait for 1 second before the next attempt
         console.log(`Generated Private Key Byte: ${Buffer.from(privateKeyBytes).toString('hex')}`);
         console.log(`Generated Private Key Text: ${privateKeyWIF}`);
-        console.log('Wallet Info:', result);
-        if (result.balance > 0) {
+        const balance1 = result.chain_stats.funded_txo_sum - result.chain_stats.spent_txo_sum;
+        const balance2 = result.mempool_stats.funded_txo_sum - result.mempool_stats.spent_txo_sum;
+        
+        if (result.chain_stats.tx_count > 0 || result.mempool_stats.tx_count > 0) {
+            console.log('Wallet Info:', result);
             writeData({
                 key: privateKeyWIF,
                 address: result.address,
-                balance: result.balance,
+                balance1: balance1 / 1e8,
+                tx_count1: result.chain_stats.tx_count,
+                balance2: balance2 / 1e8,
+                tx_count2: result.mempool_stats.tx_count,
                 timestamp: new Date().toISOString()
             });
         }
@@ -150,5 +154,11 @@ function bruteForce(privateKeyBytes) {
     
 }
 
+// Function to convert a byte array to a Buffer
+function byteArrayToBuffer(byteArray) {
+    return Buffer.from(byteArray);
+}
+
 let privateKeyBytes = generatePrivateKeyForBruteForce(); // Generate private key bytes
+// let privateKeyBytes = byteArrayToBuffer([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]) // Generate private key bytes
 bruteForce(privateKeyBytes); // Start brute forcing with the generated private key bytes
