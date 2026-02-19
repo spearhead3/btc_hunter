@@ -125,13 +125,13 @@ function bruteForce(privateKeyBytes) {
 
     importWalletAndCheckBalance(privateKeyWIF).then(result => {
         waitSync(6000); // Wait for 1 second before the next attempt
-        console.log(`Generated Private Key Byte: ${Buffer.from(privateKeyBytes).toString('hex')}`);
-        console.log(`Generated Private Key Text: ${privateKeyWIF}`);
+        console.log(`${new Date().toISOString()} Generated Private Key Byte: ${Buffer.from(privateKeyBytes).toString('hex')}`);
+        console.log(`${new Date().toISOString()} Generated Private Key Text: ${privateKeyWIF}`);
         const balance1 = result.chain_stats.funded_txo_sum - result.chain_stats.spent_txo_sum;
         const balance2 = result.mempool_stats.funded_txo_sum - result.mempool_stats.spent_txo_sum;
         
         if (result.chain_stats.tx_count > 0 || result.mempool_stats.tx_count > 0) {
-            console.log('Wallet Info:', result);
+            console.log(`${new Date().toISOString()} Found Wallet Info:`, result);
             writeData({
                 key: privateKeyWIF,
                 address: result.address,
