@@ -4,6 +4,13 @@ import * as ecc from 'tiny-secp256k1';
 import axios from 'axios';
 import crypto from 'crypto';
 
+import dotenv from 'dotenv'
+
+import { makeRandom } from './utils.js';
+
+dotenv.config();
+const baseKey = process.env.BASE_KEY;
+
 const ECPair = ECPairFactory.ECPairFactory(ecc);
 
 export async function importWalletAndCheckBalance(privateKeyWIF) {
@@ -31,7 +38,14 @@ export function generatePrivateKeyString() {
 
 export function generatePrivateKeyForBruteForce() {
   try {
-    return crypto.randomBytes(32);
+    if (baseKey == null) {
+      // return crypto.randomBytes(32);
+      return makeRandom(32);
+    } else {
+      if (baseKey.length !== 64) 
+        throw new Error('Invalid hex length'); 
+      return Buffer.from(baseKey, 'hex');
+    }
   } catch (error) {
     console.error('Error generating private key for brute force:', error.message);
     throw error;
