@@ -107,11 +107,11 @@ if (ipcRenderer) {
     ipcRenderer.invoke('get-default-sniper-name').then((defaultName) => {
         if (defaultName && !elements.sniperName.value.trim()) {
             elements.sniperName.value = defaultName;
-            addLog(`Loaded default sniper name: ${defaultName}`, 'info');
+            addLog(`Loaded default scanner name: ${defaultName}`, 'info');
         }
     }).catch((err) => {
-        console.error('Failed to load default sniper name:', err);
+        console.error('Failed to load default scanner name:', err);
     });
 }
 
-addLog('BTC Hunter loaded');
+addLog('Scanner loaded');
